@@ -1,0 +1,8 @@
+{
+    "name": "podcasterhosting/podcast-delivery-spotify",
+    "description": "Create (add) and remove (delete) podcasts on Spotify",
+    "require": {
+        "php": "^7.1",
+        "kriswallsmith/buzz": "^0.17.1"
+    }
+}
