@@ -3,7 +3,7 @@
 Via Composer
 
 ``` bash
-$ composer require podcasterhosting/podcast-client-spotify
+$ composer require podcasthosting/podcast-client-spotify
 ```
 
 

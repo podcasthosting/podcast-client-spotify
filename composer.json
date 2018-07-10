@@ -1,8 +1,8 @@
 {
-    "name": "podcasterhosting/podcast-client-spotify",
+    "name": "podcasthosting/podcast-client-spotify",
     "description": "Create (add) and remove (delete) podcasts on Spotify",
     "keywords": ["spotify", "podcast", "podcaster"],
-    "homepage": "https://github.com/podcasterhosting/podcast-client-spotify",
+    "homepage": "https://github.com/podcasthosting/podcast-client-spotify",
     "type": "library",
     "license": "MIT",
     "authors": [

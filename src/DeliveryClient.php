@@ -5,7 +5,7 @@
  * Time: 14:34
  */
 
-namespace podcasterhosting;
+namespace podcasthosting;
 
 use Buzz\Browser;
 use Buzz\Client\Curl;
