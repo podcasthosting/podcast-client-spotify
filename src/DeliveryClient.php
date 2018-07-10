@@ -68,16 +68,16 @@ class DeliveryClient
      * that can take at most 24 hours.
      *
      * @param String $name Is an internal name used for book-keeping and doesn’t represent the name that will be
-    shown in the spotify client.
-     * @param String $rssFeed Needs to use http(s) protocol and be publicly accessible. This is the identifier for this
-    podcast.
+    * shown in the spotify client.
+     * @param String $uri Needs to use http(s) protocol and be publicly accessible. This is the identifier for this
+    * podcast.
      * @return \Psr\Http\Message\ResponseInterface
      */
-    public function create($name, $rssFeed)
+    public function create($name, $uri)
     {
         $body = json_encode([
             'name' => $name,
-            'url' => $rssFeed,
+            'url' => $uri,
         ]);
 
         $ret = $this->httpClient->post($this->getUrl(), $this->getHeaders(), $body);

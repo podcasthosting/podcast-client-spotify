@@ -40,7 +40,7 @@ $ composer test
 
 ## Contributing
 
-You find the [source on Github](https://github.com/podcasthosting/podcast-client-spotify). Feel free to submit patches. 
+You´ll find the [source on Github](https://github.com/podcasthosting/podcast-client-spotify). Feel free to submit patches. 
 
 ## License
 
