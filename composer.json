@@ -1,19 +1,32 @@
 {
-    "name": "podcasthosting/podcast-client-spotify",
-    "description": "Create (add) and remove (delete) podcasts on Spotify",
-    "keywords": ["spotify", "podcast", "podcaster"],
-    "homepage": "https://github.com/podcasthosting/podcast-client-spotify",
-    "type": "library",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Fabio Bacigalupo",
-            "email": "f.bacigalupo@open-haus.de",
-            "homepage": "https://www.podcaster.de"
-        }
-    ],
-    "require": {
-        "php": ">=7.1.0",
-        "kriswallsmith/buzz": "^0.17.1"
+  "name": "podcasthosting/podcast-client-spotify",
+  "description": "Create (add) and remove (delete) podcasts on Spotify",
+  "keywords": [
+    "spotify",
+    "podcast",
+    "podcaster",
+    "podcasting",
+    "api",
+    "rss",
+    "feed"
+  ],
+  "homepage": "https://github.com/podcasthosting/podcast-client-spotify",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Fabio Bacigalupo",
+      "email": "f.bacigalupo@open-haus.de",
+      "homepage": "https://www.podcaster.de"
     }
+  ],
+  "require": {
+    "php": ">=7.1.0",
+    "kriswallsmith/buzz": "^0.17.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "podcasthosting\\PodcastClientSpotify\\": "src/"
+    }
+  }
 }
