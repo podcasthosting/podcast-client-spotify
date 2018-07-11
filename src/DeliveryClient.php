@@ -5,11 +5,13 @@
  * Time: 14:34
  */
 
-namespace podcasthosting;
+namespace podcasthosting\PodcastClientSpotify;
 
 use Buzz\Browser;
 use Buzz\Client\Curl;
 use Http\Client\HttpClient;
+use podcasthosting\PodcastClientSpotify\Exceptions\AuthException;
+use podcasthosting\PodcastClientSpotify\Exceptions\DuplicateException;
 
 class DeliveryClient
 {
@@ -21,7 +23,7 @@ class DeliveryClient
     /**
      *
      */
-    const API_ENDPOINT = '/rss-feeds';
+    const API_ENDPOINT = 'rss-feeds';
 
     /**
      * @var String
@@ -68,10 +70,12 @@ class DeliveryClient
      * that can take at most 24 hours.
      *
      * @param String $name Is an internal name used for book-keeping and doesn’t represent the name that will be
-    * shown in the spotify client.
+     * shown in the spotify client.
      * @param String $uri Needs to use http(s) protocol and be publicly accessible. This is the identifier for this
-    * podcast.
-     * @return \Psr\Http\Message\ResponseInterface
+     * podcast.
+     * @return Result
+     * @throws DuplicateException
+     * @throws AuthException
      */
     public function create($name, $uri)
     {
@@ -81,8 +85,19 @@ class DeliveryClient
         ]);
 
         $ret = $this->httpClient->post($this->getUrl(), $this->getHeaders(), $body);
+        $code = $ret->getStatusCode();
+        $body = json_decode($ret->getBody()->getContents());
 
-        return $ret;
+        switch ($code) {
+            case 201:
+                return new Result($body->spotifyUri);
+            case 401:
+                throw new AuthException();
+            case 409:
+                throw new DuplicateException($body->reason);
+            default:
+                throw new \UnexpectedValueException();
+        }
     }
 
     /**
@@ -103,7 +118,7 @@ class DeliveryClient
         return self::API_URI
             . DIRECTORY_SEPARATOR . $this->getVersion()
             . DIRECTORY_SEPARATOR . self::API_ENDPOINT
-            . DIRECTORY_SEPARATOR . $attach
+            . ($attach ? DIRECTORY_SEPARATOR . $attach : null)
             . '?token=' . $this->getToken();
     }
 
