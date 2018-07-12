@@ -11,6 +11,7 @@ use Buzz\Browser;
 use Buzz\Client\Curl;
 use Http\Client\HttpClient;
 use podcasthosting\PodcastClientSpotify\Exceptions\AuthException;
+use podcasthosting\PodcastClientSpotify\Exceptions\DomainException;
 use podcasthosting\PodcastClientSpotify\Exceptions\DuplicateException;
 
 class DeliveryClient
@@ -93,6 +94,8 @@ class DeliveryClient
                 return new Result($body->spotifyUri);
             case 401:
                 throw new AuthException();
+            case 403:
+                throw new DomainException($body->reason);
             case 409:
                 throw new DuplicateException($body->reason);
             default:

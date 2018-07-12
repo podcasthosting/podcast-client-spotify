@@ -23,7 +23,15 @@ $token = "YourVeryPrivateAuthToken";
 // Initiate client
 $client = new DeliveryClient($token);
 // Create podcast entry on Spotify
-$res = $client->create('Example Feed', 'https://example.podcaster.de/feed.rss');
+try {
+    $res = $client->create('Example Feed', 'https://example.podcaster.de/feed.rss');
+    if ($res instanceof Result) {
+        // Do something with SpotifyUri
+        $res->getSpotifyUri(); 
+    }
+} catch (AuthException $e) {
+} catch (DuplicateException $e) {
+}
 // Remove podcast entry
 $res = $client->remove('spotify:show:123');
 ```
