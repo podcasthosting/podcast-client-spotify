@@ -108,7 +108,7 @@ class DeliveryClient
      * Makes a podcast inaccessible on spotify and also stops any updates on it.
      *
      * @param String $spotifyUri Returned when podcast is created (added), e.g. "spotify:show:123"
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return boolean
      * @throws AuthException
      */
     public function remove($spotifyUri)
@@ -117,13 +117,13 @@ class DeliveryClient
         $code = $ret->getStatusCode();
 
         switch ($code) {
+            case 200:
+                return true;
             case 401:
                 throw new AuthException();
             default:
-                //throw new \UnexpectedValueException();
+                throw new \UnexpectedValueException();
         }
-
-        return $ret;
     }
 
     private function getUrl($attach = null)
