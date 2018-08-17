@@ -109,10 +109,19 @@ class DeliveryClient
      *
      * @param String $spotifyUri Returned when podcast is created (added), e.g. "spotify:show:123"
      * @return \Psr\Http\Message\ResponseInterface
+     * @throws AuthException
      */
     public function remove($spotifyUri)
     {
         $ret = $this->httpClient->delete($this->getUrl($spotifyUri));
+        $code = $ret->getStatusCode();
+
+        switch ($code) {
+            case 401:
+                throw new AuthException();
+            default:
+                //throw new \UnexpectedValueException();
+        }
 
         return $ret;
     }
