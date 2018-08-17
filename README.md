@@ -27,13 +27,14 @@ try {
     $res = $client->create('Example Feed', 'https://example.podcaster.de/feed.rss');
     if ($res instanceof Result) {
         // Do something with SpotifyUri
-        $res->getSpotifyUri(); 
+        $spotifyUri = $res->getSpotifyUri(); // Result e.g. spotify:show:123
     }
 } catch (AuthException $e) {
 } catch (DuplicateException $e) {
+} catch (DomainException $e) {
 }
 // Remove podcast entry
-$res = $client->remove('spotify:show:123');
+$res = $client->remove($spotifyUri);
 ```
 
 

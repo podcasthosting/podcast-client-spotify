@@ -10,9 +10,9 @@ namespace podcasthosting\PodcastClientSpotify;
 use Buzz\Browser;
 use Buzz\Client\Curl;
 use Http\Client\HttpClient;
-use podcasthosting\PodcastClientSpotify\Exceptions\AuthException;
-use podcasthosting\PodcastClientSpotify\Exceptions\DomainException;
-use podcasthosting\PodcastClientSpotify\Exceptions\DuplicateException;
+use podcasthosting\PodcastClientSpotify\Exceptions\{
+    AuthException, DomainException, DuplicateException
+};
 
 class DeliveryClient
 {
@@ -77,6 +77,7 @@ class DeliveryClient
      * @return Result
      * @throws DuplicateException
      * @throws AuthException
+     * @throws DomainException
      */
     public function create($name, $uri)
     {
