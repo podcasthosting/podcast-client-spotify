@@ -100,7 +100,7 @@ class DeliveryClient
             case 409:
                 throw new DuplicateException($body->reason);
             default:
-                throw new \UnexpectedValueException();
+                throw new \UnexpectedValueException("Call failed with code: {$code}.");
         }
     }
 
