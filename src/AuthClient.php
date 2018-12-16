@@ -74,13 +74,13 @@ class AuthClient
      */
     public function getToken()
     {
-        $body = json_encode([
+        $body = [
             'grant_type' => 'client_credentials',
             'client_id' => $this->clientId,
             'client_secret' => $this->clientSecret,
-        ]);
+        ];
 
-        $ret = $this->httpClient->post($this->getUrl(self::ENDPOINT_OAUTH_TOKEN), $this->getHeaders(), $body);
+        $ret = $this->httpClient->get($this->getUrl(self::ENDPOINT_OAUTH_TOKEN) . "?" . http_build_query($body), $this->getHeaders());
         $code = $ret->getStatusCode();
         $body = json_decode($ret->getBody()->getContents());
 
