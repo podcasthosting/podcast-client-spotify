@@ -12,6 +12,8 @@ use Buzz\Client\Curl;
 use Http\Client\HttpClient;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use podcasthosting\PodcastClientSpotify\Exceptions\AuthException;
+use Tuupola\Http\Factory\RequestFactory;
+use Tuupola\Http\Factory\ResponseFactory;
 
 class AuthClient
 {
@@ -62,8 +64,7 @@ class AuthClient
         if (!is_null($httpClient)) {
             $this->httpClient = $httpClient;
         } else {
-            $requestFactory = new Psr17Factory();
-            $this->httpClient = new Browser(new Curl(), $requestFactory);
+            $this->httpClient = new Browser(new Curl(new ResponseFactory()), new RequestFactory());
         }
     }
 
