@@ -5,7 +5,7 @@
  * Time: 16:44
  */
 
-namespace podcasthosting\PodcastClientSpotify;
+namespace podcasthosting\PodcastClientSpotify\Delivery;
 
 
 class Result

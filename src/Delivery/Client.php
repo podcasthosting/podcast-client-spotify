@@ -5,7 +5,7 @@
  * Time: 14:34
  */
 
-namespace podcasthosting\PodcastClientSpotify;
+namespace podcasthosting\PodcastClientSpotify\Delivery;
 
 use Buzz\Browser;
 use Buzz\Client\Curl;
@@ -14,7 +14,7 @@ use podcasthosting\PodcastClientSpotify\Exceptions\{
     AuthException, DomainException, DuplicateException
 };
 
-class DeliveryClient
+class Client
 {
     /**
      * URI to work with
@@ -96,11 +96,11 @@ class DeliveryClient
             case 401:
                 throw new AuthException();
             case 403:
-                throw new DomainException($body->reason);
+                throw new DomainException($body->reason, 403);
             case 409:
-                throw new DuplicateException($body->reason);
+                throw new DuplicateException($body->reason, 409);
             default:
-                throw new \UnexpectedValueException("Call failed with code: {$code}.");
+                throw new \UnexpectedValueException("Call failed with code: {$code}.", $code);
         }
     }
 
@@ -122,7 +122,7 @@ class DeliveryClient
             case 401:
                 throw new AuthException();
             default:
-                throw new \UnexpectedValueException();
+                throw new \UnexpectedValueException("Call failed with code: {$code}.", $code);
         }
     }
 

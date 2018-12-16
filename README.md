@@ -19,13 +19,14 @@ You´ll need to be a certified podcast provider to use this API.
 DeliveryClient
 
 ``` php
-$token = "YourVeryPrivateAuthToken";
+$auth = new AuthClient($clientId, $clientSecret);
+$token = $auth->getToken();
 // Initiate client
-$client = new DeliveryClient($token);
+$client = new Delivery\Client($token->access_token);
 // Create podcast entry on Spotify
 try {
     $res = $client->create('Example Feed', 'https://example.podcaster.de/feed.rss');
-    if ($res instanceof Result) {
+    if ($res instanceof Delivery\Result) {
         // Do something with SpotifyUri
         $spotifyUri = $res->getSpotifyUri(); // Result e.g. spotify:show:123
     }

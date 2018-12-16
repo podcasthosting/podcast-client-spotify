@@ -22,7 +22,7 @@
   ],
   "require": {
     "php": ">=7.1.0",
-    "kriswallsmith/buzz": "^1.0.0-beta1",
+    "kriswallsmith/buzz": "@stable",
     "ext-json": "*",
     "tuupola/http-factory": "^1.0"
   },

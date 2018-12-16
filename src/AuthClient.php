@@ -10,7 +10,6 @@ namespace podcasthosting\PodcastClientSpotify;
 use Buzz\Browser;
 use Buzz\Client\Curl;
 use Http\Client\HttpClient;
-use Nyholm\Psr7\Factory\Psr17Factory;
 use podcasthosting\PodcastClientSpotify\Exceptions\AuthException;
 use Tuupola\Http\Factory\RequestFactory;
 use Tuupola\Http\Factory\ResponseFactory;
@@ -64,7 +63,7 @@ class AuthClient
         if (!is_null($httpClient)) {
             $this->httpClient = $httpClient;
         } else {
-            $this->httpClient = new Browser(new Curl(new ResponseFactory()), new RequestFactory());
+            $this->httpClient = new Browser(new Curl([], new ResponseFactory()), new RequestFactory());
         }
     }
 
@@ -80,11 +79,13 @@ class AuthClient
             'client_secret' => $this->clientSecret,
         ];
 
-        $ret = $this->httpClient->get($this->getUrl(self::ENDPOINT_OAUTH_TOKEN) . "?" . http_build_query($body), $this->getHeaders());
+        $ret = $this->httpClient->post($this->getUrl(self::ENDPOINT_OAUTH_TOKEN), $this->getHeaders(), http_build_query($body));
+        //$ret = $this->httpClient->get($this->getUrl(self::ENDPOINT_OAUTH_TOKEN) . "?" . http_build_query($body), $this->getHeaders());
         $code = $ret->getStatusCode();
         $body = json_decode($ret->getBody()->getContents());
 
         switch ($code) {
+            case 200:
             case 201:
                 return $body;
             case 400:
