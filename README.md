@@ -39,6 +39,21 @@ $res = $client->remove($spotifyUri);
 ```
 
 
+AnalyticsClient
+
+``` php
+$auth = new AuthClient($clientId, $clientSecret);
+$token = $auth->getToken();
+// Initiate client
+$client = new Analytics\Client($token->access_token, $clientId);
+// Fetch analytics data from Spotify
+try {
+    $res = $analyticsClient->get((new \DateTime())->setDate(\DateInterval::createfromdatestring('-1 day'))); 
+} catch (AuthException $e) {
+}
+```
+
+
 ## Testing
 
 Not yet available. Sorry.

@@ -41,23 +41,18 @@ class Client
         'Content-Type' => 'application/json',
     ];
     /**
-     * @var String
-     */
-    private $clientId;
-
-    /**
      * DeliveryClient constructor.
      *
-     * @param String $token Issued by the Spotify operations team to authenticate against the API
      * @param String $clientId
+     * @param String $token
      * @param String|null $uri
      * @param HttpClient|null $httpClient
      */
-    public function __construct(String $token, String $clientId, HttpClient $httpClient = null)
+    public function __construct(String $clientId, String $token, HttpClient $httpClient = null)
     {
-        $this->token = $token;
-
         $this->clientId = $clientId;
+
+        $this->token = $token;
 
         if (!is_null($httpClient)) {
             $this->httpClient = $httpClient;
@@ -65,6 +60,11 @@ class Client
             $this->httpClient = new Browser(new Curl([], new ResponseFactory()), new RequestFactory());
         }
     }
+
+    /**
+     * @var String
+     */
+    private $clientId;
 
     /**
      * Used to create a feed that will start being ingested
@@ -84,13 +84,14 @@ class Client
     {
         $ret = $this->httpClient->get($this->getUrl($date), $this->getHeaders());
         $code = $ret->getStatusCode();
-        $body = json_decode($ret->getBody()->getContents());
+        $body = gzdecode((string) $ret->getBody());
 
         switch ($code) {
             case 200:
             case 201:
-                return $body;
-                //return new Result();
+                //return $body;
+                //return new Result($body);
+                return json_decode($body);
             case 401:
                 throw new AuthException();
             default:

@@ -23,8 +23,9 @@
   "require": {
     "php": ">=7.1.0",
     "kriswallsmith/buzz": "@stable",
+    "tuupola/http-factory": "^1.0",
     "ext-json": "*",
-    "tuupola/http-factory": "^1.0"
+    "ext-zlib": "*"
   },
   "autoload": {
     "psr-4": {
