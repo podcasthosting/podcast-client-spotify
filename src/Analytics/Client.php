@@ -22,17 +22,12 @@ class Client
      * URI to work with
      * https://ws.spotify.com/analytics/api/CLIENTID/aggregatedepisodes/YYYY/MM/DD
      */
-    const API_URI = 'https://ws.spotify.com/analytics/';
+    const API_URI = 'https://ws.spotify.com/analytics/api/';
 
     /**
      * @var string
      */
     private $token;
-
-    /**
-     * @var string
-     */
-    private $uri;
 
     /**
      * @var HttpClient
@@ -45,22 +40,24 @@ class Client
     private $headers = [
         'Content-Type' => 'application/json',
     ];
+    /**
+     * @var String
+     */
+    private $clientId;
 
     /**
      * DeliveryClient constructor.
      *
      * @param String $token Issued by the Spotify operations team to authenticate against the API
+     * @param String $clientId
+     * @param String|null $uri
      * @param HttpClient|null $httpClient
      */
-    public function __construct(String $token, String $uri = null, HttpClient $httpClient = null)
+    public function __construct(String $token, String $clientId, HttpClient $httpClient = null)
     {
         $this->token = $token;
 
-        if (!is_null($uri)) {
-            $this->uri = $uri;
-        } else {
-            $this->uri = self::API_URI;
-        }
+        $this->clientId = $clientId;
 
         if (!is_null($httpClient)) {
             $this->httpClient = $httpClient;
@@ -83,14 +80,9 @@ class Client
      * @throws AuthException
      * @throws DomainException
      */
-    public function create($name, $uri)
+    public function get(\DateTime $date)
     {
-        $body = json_encode([
-            'name' => $name,
-            'url' => $uri,
-        ]);
-
-        $ret = $this->httpClient->post($this->getUrl(), $this->getHeaders(), $body);
+        $ret = $this->httpClient->get($this->getUrl($date), $this->getHeaders());
         $code = $ret->getStatusCode();
         $body = json_decode($ret->getBody()->getContents());
 
@@ -101,20 +93,19 @@ class Client
                 //return new Result();
             case 401:
                 throw new AuthException();
-            case 403:
-                throw new DomainException($body->reason);
-            case 409:
-                throw new DuplicateException($body->reason);
             default:
-                throw new \UnexpectedValueException("Call failed with code: {$code}.");
+                throw new \UnexpectedValueException("Call failed with code: {$code}.", $code);
         }
     }
 
-    private function getUrl($attach = null)
+    private function getUrl(\DateTime $date)
     {
         return self::API_URI
-            . DIRECTORY_SEPARATOR
-            . ($attach ? DIRECTORY_SEPARATOR . $attach : null)
+            . $this->clientId . '/'
+            . 'aggregatedepisodes/'
+            . $date->format('Y') . '/'
+            . $date->format('m') . '/'
+            . $date->format('d')
             . '?oauth_token=' . $this->getToken();
     }
 

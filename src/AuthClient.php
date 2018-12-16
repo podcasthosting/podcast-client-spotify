@@ -80,7 +80,6 @@ class AuthClient
         ];
 
         $ret = $this->httpClient->post($this->getUrl(self::ENDPOINT_OAUTH_TOKEN), $this->getHeaders(), http_build_query($body));
-        //$ret = $this->httpClient->get($this->getUrl(self::ENDPOINT_OAUTH_TOKEN) . "?" . http_build_query($body), $this->getHeaders());
         $code = $ret->getStatusCode();
         $body = json_decode($ret->getBody()->getContents());
 
