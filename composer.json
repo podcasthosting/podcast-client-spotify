@@ -16,13 +16,14 @@
   "authors": [
     {
       "name": "Fabio Bacigalupo",
-      "email": "f.bacigalupo@open-haus.de",
+      "email": "support@podcaster.de",
       "homepage": "https://www.podcaster.de"
     }
   ],
   "require": {
     "php": ">=7.1.0",
-    "kriswallsmith/buzz": "^0.17.1"
+    "kriswallsmith/buzz": "@stable",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {
