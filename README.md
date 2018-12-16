@@ -9,9 +9,11 @@ $ composer require podcasthosting/podcast-client-spotify
 
 ## Intro
 
-Create (add) and remove (delete) podcasts on Spotify (DeliveryClient). 
+Create (add) and remove (delete) podcasts on Spotify (DeliveryClient).
 
-You´ll need to be a certified podcast provider to use this API.
+You can also fetch analytics data from another API (AnalyticsClient).  
+
+You´ll need to be a certified podcast provider to use these APIs.
 
 
 ## Documentation
