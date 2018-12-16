@@ -79,7 +79,7 @@ class AuthClient
             'client_secret' => $this->clientSecret,
         ]);
 
-        $ret = $this->httpClient->post($this->getUrl(), $this->getHeaders(), $body);
+        $ret = $this->httpClient->post($this->getUrl(self::ENDPOINT_OAUTH_TOKEN), $this->getHeaders(), $body);
         $code = $ret->getStatusCode();
         $body = json_decode($ret->getBody()->getContents());
 
