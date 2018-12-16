@@ -67,31 +67,22 @@ class Client
     private $clientId;
 
     /**
-     * Used to create a feed that will start being ingested
-     * and will be available in the Spotify client as soon as we index it,
-     * that can take at most 24 hours.
      *
-     * @param String $name Is an internal name used for book-keeping and doesn’t represent the name that will be
-     * shown in the spotify client.
-     * @param String $uri Needs to use http(s) protocol and be publicly accessible. This is the identifier for this
-     * podcast.
+     * @param \DateTime $date
      * @return Result
-     * @throws DuplicateException
      * @throws AuthException
-     * @throws DomainException
      */
     public function get(\DateTime $date)
     {
         $ret = $this->httpClient->get($this->getUrl($date), $this->getHeaders());
         $code = $ret->getStatusCode();
-        $body = gzdecode((string) $ret->getBody());
 
         switch ($code) {
             case 200:
             case 201:
                 //return $body;
                 //return new Result($body);
-                return json_decode($body);
+                return json_decode(gzdecode((string) $ret->getBody()));
             case 401:
                 throw new AuthException();
             default:

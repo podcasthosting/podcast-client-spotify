@@ -14,7 +14,8 @@ class Result
      * Result constructor.
      *
      */
-    public function __construct()
+    public function __construct(String $result)
     {
+        json_decode($result);
     }
 }
