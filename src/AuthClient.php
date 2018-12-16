@@ -86,10 +86,11 @@ class AuthClient
         switch ($code) {
             case 201:
                 return $body;
+            case 400:
             case 401:
-                throw new AuthException();
+                throw new AuthException($body->error . ': ' . $body->error_description, $code);
             default:
-                throw new \UnexpectedValueException("Call failed with code: {$code}.");
+                throw new \UnexpectedValueException("Call failed with code: {$code}.", $code);
         }
     }
 
