@@ -75,7 +75,6 @@ class Client
      * @param String $uri Needs to use http(s) protocol and be publicly accessible. This is the identifier for this
      * podcast.
      * @return Result
-     * @throws DuplicateException
      * @throws AuthException
      * @throws DomainException
      */
@@ -92,13 +91,14 @@ class Client
 
         switch ($code) {
             case 201:
+            case 409:
                 return new Result($body->spotifyUri);
             case 401:
                 throw new AuthException();
             case 403:
                 throw new DomainException($body->reason, 403);
-            case 409:
-                throw new DuplicateException($body->reason, 409);
+/*            case 409:
+                throw new DuplicateException($body->reason, 409);*/
             default:
                 throw new \UnexpectedValueException("Call failed with code: {$code}.", $code);
         }

@@ -33,7 +33,6 @@ try {
         $spotifyUri = $res->getSpotifyUri(); // Result e.g. spotify:show:123
     }
 } catch (AuthException $e) {
-} catch (DuplicateException $e) {
 } catch (DomainException $e) {
 }
 // Remove podcast entry
