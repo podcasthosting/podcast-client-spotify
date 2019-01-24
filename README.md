@@ -11,9 +11,9 @@ $ composer require podcasthosting/podcast-client-spotify
 
 Create (add) and remove (delete) podcasts on Spotify (DeliveryClient).
 
-You can also fetch analytics data from another API (AnalyticsClient).  
+You can also fetch analytics data from a different Spotify API (AnalyticsClient).  
 
-You´ll need to be a certified podcast provider to use these APIs.
+You´ll need to be a certified podcast provider (aggregator) to use these APIs.
 
 
 ## Documentation
@@ -49,7 +49,15 @@ $token = $auth->getToken();
 $client = new Analytics\Client($token->access_token, $clientId);
 // Fetch analytics data from Spotify
 try {
-    $res = $analyticsClient->get((new \DateTime())->setDate(\DateInterval::createfromdatestring('-1 day'))); 
+    $res = $analyticsClient->get((new \DateTime())->setDate(\DateInterval::createfromdatestring('-1 day')));
+    if ($res instanceof Analytics\Result) {
+        // Iterate over JSON objects (from json_decode)
+        foreach($res->getDecoded() as $jsonObject) {
+        }
+        // Iterate over pure JSON strings
+        foreach($res->getRaw() as $sJson) {
+        }
+    }     
 } catch (AuthException $e) {
 }
 ```

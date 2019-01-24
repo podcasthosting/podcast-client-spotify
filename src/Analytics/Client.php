@@ -69,7 +69,7 @@ class Client
     /**
      *
      * @param \DateTime $date
-     * @return array
+     * @return Result
      * @throws AuthException
      */
     public function get(\DateTime $date)
@@ -80,13 +80,7 @@ class Client
         switch ($code) {
             case 200:
             case 201:
-                //return $body;
-                //return new Result($body);
-                $a = [];
-                foreach (explode(PHP_EOL, gzdecode((string) $ret->getBody())) as $line) {
-                    $a[] = json_decode($line);
-                }
-                return $a;
+                return new Result(gzdecode((string) $ret->getBody()));
             case 401:
                 throw new AuthException();
             default:

@@ -25,7 +25,8 @@
     "kriswallsmith/buzz": "@stable",
     "tuupola/http-factory": "^1.0",
     "ext-json": "*",
-    "ext-zlib": "*"
+    "ext-zlib": "*",
+    "phpunit/phpunit": "^7.5"
   },
   "autoload": {
     "psr-4": {
