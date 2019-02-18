@@ -13,6 +13,8 @@ use Http\Client\HttpClient;
 use podcasthosting\PodcastClientSpotify\Exceptions\{
     AuthException, DomainException, DuplicateException
 };
+use Tuupola\Http\Factory\RequestFactory;
+use Tuupola\Http\Factory\ResponseFactory;
 
 class Client
 {
@@ -61,7 +63,7 @@ class Client
         if (!is_null($httpClient)) {
             $this->httpClient = $httpClient;
         } else {
-            $this->httpClient = new Browser(new Curl());
+            $this->httpClient = new Browser(new Curl(new ResponseFactory()), new RequestFactory());
         }
     }
 

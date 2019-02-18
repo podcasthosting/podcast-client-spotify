@@ -63,7 +63,7 @@ class AuthClient
         if (!is_null($httpClient)) {
             $this->httpClient = $httpClient;
         } else {
-            $this->httpClient = new Browser(new Curl([], new ResponseFactory()), new RequestFactory());
+            $this->httpClient = new Browser(new Curl(new ResponseFactory()), new RequestFactory());
         }
     }
 
