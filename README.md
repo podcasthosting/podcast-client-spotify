@@ -23,8 +23,10 @@ DeliveryClient
 ``` php
 $auth = new AuthClient($clientId, $clientSecret);
 $token = $auth->getToken();
+
 // Initiate client
 $client = new Delivery\Client($token->access_token);
+
 // Create podcast entry on Spotify
 try {
     $res = $client->create('Example Feed', 'https://example.podcaster.de/feed.rss');
@@ -35,6 +37,20 @@ try {
 } catch (AuthException $e) {
 } catch (DomainException $e) {
 } catch (DuplicateException $e) {
+}
+
+// Get status and info for podcast entry on Spotify
+try {
+    $res = $client->status($spotifyUri);
+    if ($res instanceof Result) {
+        // A description of the current status of the podcast.
+        $statusDescription = $res->getStatusDescription();
+        // A list of descriptive validation errors for the podcast
+        $validationErrors = $res->getValidationErrors();
+    }
+} catch (AuthException $e) {
+} catch (DomainException $e) {
+} catch (NotFoundException $e) {
 }
 
 // Update uri for podcast entry on Spotify
@@ -50,7 +66,15 @@ try {
 }
 
 // Remove podcast entry
-$res = $client->remove($spotifyUri);
+try {
+    $res = $client->remove($spotifyUri);
+    if (true === $res) {
+      // Is removed
+    }    
+} catch (AuthException $e) {
+} catch (DomainException $e) {
+} catch (NotFoundException $e) {
+}
 ```
 
 

@@ -177,6 +177,8 @@ class Client
      * @param String $spotifyUri Returned when podcast is created (added), e.g. "spotify:show:123"
      * @return boolean
      * @throws AuthException
+     * @throws DomainException
+     * @throws NotFoundException
      */
     public function remove($spotifyUri)
     {
@@ -187,7 +189,11 @@ class Client
             case 200:
                 return true;
             case 401:
-                throw new AuthException();
+                throw new AuthException($ret->getReasonPhrase());
+            case 403:
+                throw new DomainException($ret->getReasonPhrase(), 403);
+            case 404:
+                throw new NotFoundException();
             default:
                 throw new \UnexpectedValueException("Call failed with code: {$code}.", $code);
         }
