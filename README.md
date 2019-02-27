@@ -34,7 +34,21 @@ try {
     }
 } catch (AuthException $e) {
 } catch (DomainException $e) {
+} catch (DuplicateException $e) {
 }
+
+// Update uri for podcast entry on Spotify
+try {
+    $newUrl = 'https://example.podcaster.de/newfeed.rss';
+    $res = $client->status($spotifyUri, $newUrl);
+    if (true === $res) {
+      // Is updated
+    }
+} catch (AuthException $e) {
+} catch (DomainException $e) {
+} catch (NotFoundException $e) {
+}
+
 // Remove podcast entry
 $res = $client->remove($spotifyUri);
 ```
@@ -54,7 +68,7 @@ try {
         // Iterate over JSON objects (from json_decode)
         foreach($res->getDecoded() as $jsonObject) {
         }
-        // Iterate over pure JSON strings
+        // Iterate over raw JSON strings
         foreach($res->getRaw() as $sJson) {
         }
     }     

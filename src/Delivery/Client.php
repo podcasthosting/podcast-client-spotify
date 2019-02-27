@@ -10,9 +10,10 @@ namespace podcasthosting\PodcastClientSpotify\Delivery;
 use Buzz\Browser;
 use Buzz\Client\Curl;
 use Http\Client\HttpClient;
-use podcasthosting\PodcastClientSpotify\Exceptions\{
-    AuthException, DomainException, DuplicateException
-};
+use podcasthosting\PodcastClientSpotify\Exceptions\{AuthException,
+    DomainException,
+    DuplicateException,
+    NotFoundException};
 use Tuupola\Http\Factory\RequestFactory;
 use Tuupola\Http\Factory\ResponseFactory;
 
@@ -76,15 +77,18 @@ class Client
      * shown in the spotify client.
      * @param String $uri Needs to use http(s) protocol and be publicly accessible. This is the identifier for this
      * podcast.
+     * @param bool $isPassthrough Optionally specify whether the content should be served via passthrough.
      * @return Result
      * @throws AuthException
      * @throws DomainException
+     * @throws DuplicateException
      */
-    public function create($name, $uri)
+    public function create($name, $uri, $isPassthrough = false)
     {
         $body = json_encode([
             'name' => $name,
             'url' => $uri,
+            'isPassthrough' => $isPassthrough
         ]);
 
         $ret = $this->httpClient->post($this->getUrl(), $this->getHeaders(), $body);
@@ -93,16 +97,77 @@ class Client
 
         switch ($code) {
             case 201:
-            case 409:
                 return new Result($body->spotifyUri);
             case 401:
-                throw new AuthException();
+                throw new AuthException($ret->getReasonPhrase());
             case 403:
-                throw new DomainException($body->reason, 403);
-/*            case 409:
-                throw new DuplicateException($body->reason, 409);*/
+                throw new DomainException($ret->getReasonPhrase(), 403);
+            case 409:
+                if (isset($body->spotifyUri) && !empty($body->spotifyUri)) {
+                    return new Result($body->spotifyUri);
+                }
+                throw new DuplicateException($ret->getReasonPhrase(), 409);
             default:
-                throw new \UnexpectedValueException("Call failed with code: {$code}.", $code);
+                throw new \UnexpectedValueException("Call failed with code: {$code}." . $ret->getReasonPhrase(), $code);
+        }
+    }
+
+    /**
+     * @param String $spotifyUri Spotify identifier assigned to the podcast.
+     * @return Result
+     * @throws AuthException
+     * @throws DomainException
+     * @throws DuplicateException
+     * @throws NotFoundException
+     */
+    public function status($spotifyUri)
+    {
+        $ret = $this->httpClient->get($this->getUrl($spotifyUri), $this->getHeaders());
+        $code = $ret->getStatusCode();
+        $body = json_decode($ret->getBody()->getContents());
+
+        switch ($code) {
+            case 200:
+                return new Result($body->spotifyUri, $body->statusCode, $body->statusDescription, $body->validationErrors);
+            case 401:
+                throw new AuthException($ret->getReasonPhrase());
+            case 403:
+                throw new DomainException($ret->getReasonPhrase(), 403);
+            case 404:
+                throw new NotFoundException();
+            default:
+                throw new \UnexpectedValueException("Call failed with code: {$code}. " . $ret->getReasonPhrase(), $code);
+        }
+    }
+
+    /**
+     * @param String $spotifyUri Spotify identifier assigned to the podcast.
+     * @param String $uri The new URL the podcast will now be accessed from. Need to conform to the same rules as when creating a new podcast.
+     * @return bool
+     * @throws AuthException
+     * @throws DomainException
+     * @throws NotFoundException
+     */
+    public function update($spotifyUri, $uri)
+    {
+        $body = json_encode([
+            'url' => $uri,
+        ]);
+
+        $ret = $this->httpClient->put($this->getUrl($spotifyUri), $this->getHeaders(), $body);
+        $code = $ret->getStatusCode();
+
+        switch ($code) {
+            case 200:
+                return true;
+            case 401:
+                throw new AuthException($ret->getReasonPhrase());
+            case 403:
+                throw new DomainException($ret->getReasonPhrase(), 403);
+            case 404:
+                throw new NotFoundException();
+            default:
+                throw new \UnexpectedValueException("Call failed with code: {$code}. " . $ret->getReasonPhrase(), $code);
         }
     }
 
