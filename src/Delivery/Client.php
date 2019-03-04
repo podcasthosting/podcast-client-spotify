@@ -128,7 +128,7 @@ class Client
 
         switch ($code) {
             case 200:
-                return new Result($body->spotifyUri, $body->statusCode, $body->statusDescription, $body->validationErrors);
+                return new Result($body->spotifyUri, $body->statusCode, $body->statusDescription, $body->validationErrors ?? null);
             case 401:
                 throw new AuthException($ret->getReasonPhrase());
             case 403:
