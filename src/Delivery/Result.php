@@ -39,7 +39,15 @@ class Result
         }
 
         if (!is_null($validationErrors)) {
-            $this->validationErrors = json_decode($validationErrors);
+            if (is_array($validationErrors)) {
+                $errors = [];
+                foreach($validationErrors as $validationError) {
+                    $errors[] = $this->decodeError($validationError);
+                }
+            } else {
+                $errors[] = $this->decodeError($validationErrors);
+            }
+            $this->validationErrors = $errors;
         }
     }
 
@@ -81,5 +89,18 @@ class Result
     public function getValidationErrors()
     {
         return $this->validationErrors;
+    }
+
+    private function decodeError($validationError)
+    {
+        $error = null;
+
+        if ($validationError instanceof \stdClass) {
+            $error = $validationError->message ?? $validationError;
+        } else {
+            $error = json_decode($validationError);
+        }
+
+        return $error;
     }
 }
