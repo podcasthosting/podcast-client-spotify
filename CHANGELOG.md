@@ -19,3 +19,7 @@
 * Added new methods to retrieve status and update uri as documented for Spotify Podcast Ingestion API - v.1.5  
 * Added parameter for passthrough option
 * Re-introduced DuplicateException to reflect changes with duplicate titles
+
+### 0.12.4 (2020-04-14)
+
+* Allow different versions of PHPUnit to be installed to prevent conflicts with installations
