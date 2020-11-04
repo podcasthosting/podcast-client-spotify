@@ -1,37 +1,39 @@
 {
-  "name": "podcasthosting/podcast-client-spotify",
-  "description": "Create (add) and remove (delete) podcasts on Spotify",
-  "keywords": [
-    "spotify",
-    "podcast",
-    "podcaster",
-    "podcasting",
-    "api",
-    "rss",
-    "feed"
-  ],
-  "homepage": "https://github.com/podcasthosting/podcast-client-spotify",
-  "type": "library",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Fabio Bacigalupo",
-      "email": "support@podcaster.de",
-      "homepage": "https://www.podcaster.de"
+    "name": "podcasthosting/podcast-client-spotify",
+    "description": "Create (add) and remove (delete) podcasts on Spotify",
+    "keywords": [
+        "spotify",
+        "podcast",
+        "podcaster",
+        "podcasting",
+        "api",
+        "rss",
+        "feed"
+    ],
+    "homepage": "https://github.com/podcasthosting/podcast-client-spotify",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabio Bacigalupo",
+            "email": "support@podcaster.de",
+            "homepage": "https://www.podcaster.de"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "ext-json": "*",
+        "ext-zlib": "*",
+        "kriswallsmith/buzz": "@stable",
+        "tuupola/http-factory": "^1.3",
+        "phpunit/phpunit": "^7.5 | ^8.0 | ^9.0",
+        "guzzlehttp/psr7": "^1.7",
+        "psr/http-message": "^1.0",
+        "psr/http-factory": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "podcasthosting\\PodcastClientSpotify\\": "src/"
+        }
     }
-  ],
-  "require": {
-    "php": ">=7.1.0",
-    "kriswallsmith/buzz": "@stable",
-    "tuupola/http-factory": "^1.0",
-    "ext-json": "*",
-    "ext-zlib": "*",
-    "phpunit/phpunit": "^7.5 | ^8.0 | ^9.0",
-    "guzzlehttp/psr7": "^1.5"
-  },
-  "autoload": {
-    "psr-4": {
-      "podcasthosting\\PodcastClientSpotify\\": "src/"
-    }
-  }
 }
