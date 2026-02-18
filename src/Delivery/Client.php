@@ -14,6 +14,7 @@ use podcasthosting\PodcastClientSpotify\Exceptions\{AuthException,
     DomainException,
     DuplicateException,
     NotFoundException};
+use Psr\Http\Client\ClientInterface;
 use Tuupola\Http\Factory\RequestFactory;
 use Tuupola\Http\Factory\ResponseFactory;
 
@@ -37,7 +38,7 @@ class Client
     /**
      * @var HttpClient
      */
-    private $httpClient;
+    private ClientInterface $httpClient;
 
     /**
      * @var string
@@ -55,9 +56,9 @@ class Client
      * DeliveryClient constructor.
      *
      * @param String $token Issued by the Spotify operations team to authenticate against the API
-     * @param HttpClient|null $httpClient
+     * @param ClientInterface|null $httpClient
      */
-    public function __construct(String $token, HttpClient $httpClient = null)
+    public function __construct(String $token, ClientInterface $httpClient = null)
     {
         $this->token = $token;
 
@@ -89,7 +90,7 @@ class Client
             'name' => $name,
             'url' => $uri,
             'isPassthrough' => $isPassthrough
-        ]);
+        ], JSON_THROW_ON_ERROR);
 
         $ret = $this->httpClient->post($this->getUrl(), $this->getHeaders(), $body);
         $code = $ret->getStatusCode();
